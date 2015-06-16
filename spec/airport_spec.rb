@@ -10,20 +10,28 @@ describe Airport do
 
   describe 'take off' do
 
-    let(:plane){ Plane.new }
+    let(:plane){ Plane.new } # refactor with doubles
+
+    before(:each) do
+      allow(subject).to receive(:stormy?).and_return false
+    end
 
     it 'releases a plane' do
-      allow(subject).to receive(:weather) { 4 }
       subject.landing plane
       subject.requesting_take_off
-      expect(subject.empty?).to eq true
+      expect(subject.empty?).to eq true # to be empty
     end
 
     it 'instructs a plane to take off' do
-      allow(subject).to receive(:weather) { 4 }
+      # SETUP
+      plane = double :plane, landed?: false, land: nil
       subject.landing plane
+
+      # EXPECTATION ABOUT THE FUTURE
+      expect(plane).to receive :take_off
+
+      # EXERCISE
       subject.requesting_take_off
-      expect(plane).to be_flying
     end
 
     it 'raises an error message when the airport is empty' do
@@ -33,10 +41,10 @@ describe Airport do
     context 'when weather conditions are stormy' do
 
       it 'raises an error when plane tries to take off' do
-        allow(subject).to receive(:weather) { 4 }
         subject.landing plane
-        allow(subject).to receive(:weather) { 10 }
-        expect { subject.requesting_take_off }.to raise_error 'It\'s too stormy to fly!'
+
+        allow(subject).to receive(:stormy?).and_return true
+        expect { subject.requesting_take_off }.to raise_error "It's too stormy to fly!"
       end
 
     end
@@ -50,10 +58,11 @@ describe Airport do
     it 'receives a plane' do
       allow(subject).to receive(:weather) { 4 }
       subject.landing plane
-      expect(subject.empty?).to eq false
+      expect(subject).not_to be_empty
     end
 
     it 'instructs a plane to land' do
+      # Have a go at refactoring this as we did above
       allow(subject).to receive(:weather) { 4 }
       subject.landing plane
       plane.land
@@ -76,7 +85,7 @@ describe Airport do
       let(:plane){ Plane.new }
 
       it 'raises an error when plane tries to land' do
-        allow(subject).to receive(:weather) { 10 }
+        allow(subject).to receive(:weather) { 10 } # use and_return syntax
         expect{subject.landing plane}.to raise_error 'It\'s too stormy to land!'
       end
 
