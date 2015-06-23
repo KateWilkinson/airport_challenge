@@ -1,13 +1,35 @@
 Airport Challenge
 =================
 
-Approach:
+We were asked to create a program to control the flow of planes into and out of an airport. This included landing and take off of plane objects, as well as traffic control and prevention of take off and landing in stormy weather.
 
-* Broke down the user stories into smaller components/problems to be solved.
-* Started by writing very basic tests to cover the simplest parts - for example; a plane object can be created, it has a status of either flying or landed, it responds to the methods take_off and land.
-* Once I had successfully written code to pass these tests, I followed the TDD workflow we've been learning this week - for each problem I created a manual feature test for how I would like my code to function, translated that into an rspec unit test and then worked on my code until the test was passed.
+We were given the below user stories to follow in order to implement our design.
 
-Issues:
 
-* I feel there's a lot of refactoring still to be done in my code, but I wasn't able to implement the changes I wanted successfully. In particular, I would have liked to make the 'requesting_take_off' and 'landing' methods in my airport class to be much shorter and cleaner - I was hoping to find a way to take the 'traffic control' elements out of those methods.
-* I looked at doubles but wasn't able to get my tests to work properly with them in place - this is definitely something that needs to be adjusted in my airport_spec file (and a topic that I need to go over again!)
+As a pilot
+So that I can arrive at my specified destination
+I would like to land my plane at the appropriate airport
+
+As a pilot
+So that I can set off for my specified destination
+I would like to be able to take off from the appropriate airport
+
+As an air traffic controller
+So that I can avoid collisions
+I want to be able to prevent airplanes landing when the airport if full
+
+As an air traffic controller
+So that I can avoid accidents
+I want to be able to prevent airplanes landing or taking off when the weather is stormy
+
+
+
+
+The program I have written allows a plane object to be landed at the airport when there is capacity, and when the weather is not stormy. Similarly, a plane can take off given that there is a plane landed at the airport, and that the weather is not stormy.
+A plane is instantiated with a 'flying' status. Once landed this becomes 'landed', and any specific plane object cannot be landed at the airport twice.
+
+My approach to this task was test-driven. By scaffolding in irb and then creating unit tests in rspec, I was able to map out how my program should function.
+
+To do:
+
+Have another look at doubles and get tests working properly
